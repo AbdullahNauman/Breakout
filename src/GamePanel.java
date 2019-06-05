@@ -14,13 +14,18 @@ public class GamePanel extends JPanel implements ActionListener
   public GamePanel()
   {
     setBackground(Color.BLACK);
-    
-    paddle = new Paddle();
-    ball = new Ball();
-    
-    //call step() 60 fps
-    Timer timer = new Timer(1000/60, this);
+
+    paddle = new Paddle(50,800);
+    ball = new Ball(65,780);
+
+    // listen to key presses
+    setFocusable(true);
+    addKeyListener(paddle);
+
+    // call step() 60 fps
+    Timer timer = new Timer(1000 / 60, this);
     timer.start();
+
   }
 
   public void paintComponent(Graphics g)
@@ -31,12 +36,13 @@ public class GamePanel extends JPanel implements ActionListener
                              // in the correct position based on data store in
                              // Paddle class
     ball.paintComponent(g);
+
   }
 
   public void actionPerformed(ActionEvent arg0)
   {
-     paddle.move();
-     ball.move();
-     repaint();
+    paddle.move();
+    ball.move();
+    repaint();
   }
 }

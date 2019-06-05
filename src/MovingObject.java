@@ -31,7 +31,7 @@ public abstract class MovingObject
 
   public int getCurrentYPos()
   {
-    return currentXPos;
+    return currentYPos;
   }
 
   public void setCurrentYPos(int currentYPos)
