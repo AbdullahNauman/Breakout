@@ -28,10 +28,8 @@ public class Main extends JFrame
   {
 
     Main frame = new Main();
-
-    frame.add(new ImageFade("Were_Now_A_Game_Studio.png",0.15,2200));
-    //frame.add(new ImageFade("breakout.png",0.213,1800));
-
+    GamePanel game = new GamePanel();
+    frame.add(game);
     frame.setVisible(true);
 
   }

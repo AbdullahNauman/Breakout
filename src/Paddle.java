@@ -1,33 +1,28 @@
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Paddle implements KeyListener
+public class Paddle extends MovingObject implements KeyListener
 {
-  private int paddleVelX;// Horizontal velocity of paddle
   private static final int initXPos = 10, initYPos = 400;// TODO Edit to ensure
                                                          // proper positioning
                                                          // on different sizes
-  private int currentXPos;
+  private final int height = 10, width = 50;// Paddle dimensions
+
   public Paddle()
   {
-    paddleVelX = 0;
-    currentXPos = initXPos;
-  }
-
-  public void move()
-  {
-    currentXPos+=paddleVelX;
+    super(initXPos,initYPos);
   }
 
   public void keyPressed(KeyEvent e)
   {
     if (e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-      paddleVelX = 1;
+      super.setObjVelX(1);
     }
     else if (e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-      paddleVelX = -1;
+      super.setObjVelX(-1);
     }
   }
 
@@ -35,27 +30,20 @@ public class Paddle implements KeyListener
   {
     if (e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-      paddleVelX = 0;
+      super.setObjVelX(0);
     }
     else if (e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-      paddleVelX = 0;
+      super.setObjVelX(0);
     }
   }
 
   public void keyTyped(KeyEvent e)
   {
-
   }
 
-  public int getCurrentXPos()
+  public void paintComponent(Graphics g)
   {
-    return currentXPos;
+    g.fillRect(super.getCurrentXPos(), super.getCurrentYPos(), width, height);
   }
-
-  public void setCurrentXPos(int currentXPos)
-  {
-    this.currentXPos = currentXPos;
-  }
-
 }
