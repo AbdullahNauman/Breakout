@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -17,8 +16,8 @@ public class Main extends JFrame
     int height = screenSize.height;
     setSize(height * 9 / 16, (int) (height * 0.8));
 
-    // setExtendedState(JFrame.MAXIMIZED_BOTH);
-     setUndecorated(true);
+    //setExtendedState(JFrame.MAXIMIZED_BOTH);
+    //setUndecorated(true);
 
     // Centering JFrame
     setLocationRelativeTo(null);
@@ -27,13 +26,10 @@ public class Main extends JFrame
 
   public static void main(String[] args)
   {
-    BorderLayout layout = new BorderLayout();
     Main frame = new Main();
     
-    frame.setLayout(layout);
-    
     GamePanel game = new GamePanel();
-    frame.add(game,BorderLayout.CENTER);
+    frame.add(game);
     
     frame.setVisible(true);
 

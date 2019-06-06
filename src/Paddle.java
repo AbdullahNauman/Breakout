@@ -16,11 +16,11 @@ public class Paddle extends MovingObject implements KeyListener
   {
     if (e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-      super.setObjVelX(1);
+      super.setObjVelX(2);
     }
     else if (e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-      super.setObjVelX(-1);
+      super.setObjVelX(-2);
     }
   }
 
@@ -44,5 +44,15 @@ public class Paddle extends MovingObject implements KeyListener
   {
     g.setColor(Color.BLUE);
     g.fillRect(super.getCurrentXPos(), super.getCurrentYPos(), width, height);
+  }
+
+  public int getHeight()
+  {
+    return height;
+  }
+
+  public int getWidth()
+  {
+    return width;
   }
 }

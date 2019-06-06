@@ -3,7 +3,7 @@ import java.awt.Graphics;
 
 public class Ball extends MovingObject
 {
-  private final int diameter = 20;// Ball dimensions
+  private final int diameter = 15;// Ball dimensions
   
   public Ball(int initXPos, int initYPos)
   {
@@ -16,4 +16,8 @@ public class Ball extends MovingObject
     g.fillOval(super.getCurrentXPos(), super.getCurrentYPos(), diameter, diameter);
   }
 
+  public int getDiameter()
+  {
+    return diameter;
+  }
 }

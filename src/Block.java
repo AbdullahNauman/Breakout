@@ -51,7 +51,7 @@ public class Block
   {
     if(hardness ==0)
       return new Color(0f,0f,0f,0f);
-    if(hardness == 1)
+    else if(hardness == 1)
       return Color.YELLOW;
     else if(hardness == 2)
       return Color.GREEN;
