@@ -5,11 +5,11 @@ import java.awt.event.KeyListener;
 
 public class Paddle extends MovingObject implements KeyListener
 {
-  private final int height = 10, width = 50;// Paddle dimensions
+  private static final int height = 10, width = 50;// Paddle dimensions
 
   public Paddle(int initXPos, int initYPos)
   {
-    super(initXPos, initYPos);
+    super(initXPos, initYPos, width, height);
   }
 
   public void keyPressed(KeyEvent e)
@@ -43,15 +43,15 @@ public class Paddle extends MovingObject implements KeyListener
   public void paintComponent(Graphics g)
   {
     g.setColor(Color.BLUE);
-    g.fillRect(super.getCurrentXPos(), super.getCurrentYPos(), width, height);
+    g.fillRect((int)super.getLocation().getX(), (int)super.getLocation().getY(), width, height);
   }
 
-  public int getHeight()
+  public double getHeight()
   {
     return height;
   }
 
-  public int getWidth()
+  public double getWidth()
   {
     return width;
   }

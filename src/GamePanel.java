@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +15,7 @@ public class GamePanel extends JPanel implements ActionListener
   private Ball ball;
   private boolean hasLost;// Initialized as false in constructor. Changes to
                           // true when ball move below paddle
+  private Rectangle topBorder, leftBorder, rightBorder;
 
   public GamePanel()
   {
@@ -56,47 +58,54 @@ public class GamePanel extends JPanel implements ActionListener
       timer.stop();
 
     Dimension panelSize = super.getSize();
+    topBorder = new Rectangle(0, 0, (int) panelSize.getWidth(),
+        (int) panelSize.getHeight() / 30);
+    leftBorder = new Rectangle(0, 0, (int) panelSize.getWidth() / 40,
+        (int) panelSize.getHeight());
+    rightBorder = new Rectangle(
+        (int) panelSize.getWidth() - (int) panelSize.getWidth() / 40, 0,
+        (int) panelSize.getWidth() / 40, (int) panelSize.getHeight());
 
     paddle.move();
+    ball.move();
 
-    if (ball.getCurrentXPos() == (int) panelSize.getWidth() / 40
-        || ball.getCurrentXPos() == (int) panelSize.getWidth()
-            - (int) panelSize.getWidth() / 40 - ball.getDiameter())// Checks for
-                                                                   // ball
-                                                                   // collisions
-                                                                   // with side
-                                                                   // walls
+    if (ball.intersects(leftBorder) || ball.intersects(rightBorder)) // Checks
+                                                                     // for
+                                                                     // ball
+                                                                     // collisions
+                                                                     // with
+                                                                     // side
+                                                                     // walls
       ball.setObjVelX(ball.getObjVelX() * -1);
 
-    if (ball.getCurrentYPos() == (int) panelSize.getHeight() / 30)// Checks for
-                                                                  // collision
-                                                                  // with top
-                                                                  // wall
-                                                                  // and losing
-                                                                  // condition
-                                                                  // of
-                                                                  // going
-                                                                  // through
-                                                                  // the bottom
+    if (ball.intersects(topBorder)) // Checks for
+                                    // collision
+                                    // with top
+                                    // wall
+                                    // and losing
+                                    // condition
+                                    // of
+                                    // going
+                                    // through
+                                    // the bottom
       ball.setObjVelY(ball.getObjVelY() * -1);
-    else if (ball.getCurrentYPos() == (int) panelSize.getHeight())
+    else if ((int) ball.getLocation().getY() == (int) panelSize.getHeight())
       hasLost = true;
-    
-    if(ball.getCurrentYPos()==paddle.getCurrentYPos()-ball.getDiameter()/2 && (ball.getCurrentXPos()>paddle.getCurrentXPos()-ball.getDiameter() && ball.getCurrentXPos()<paddle.getCurrentXPos()+paddle.getWidth()))
+
+    if (ball.intersects(paddle))
       ball.setObjVelY(ball.getObjVelY() * -1);
-    ball.move();
+
     repaint();
   }
 
   private void drawBorder(Graphics g)
   {
     g.setColor(Color.WHITE);
-    Dimension panelSize = super.getSize();
-    g.fillRect(0, 0, (int) panelSize.getWidth() / 40,
-        (int) panelSize.getHeight());
-    g.fillRect((int) panelSize.getWidth() - (int) panelSize.getWidth() / 40, 0,
-        (int) panelSize.getWidth() / 40, (int) panelSize.getHeight());
-    g.fillRect(0, 0, (int) panelSize.getWidth(),
-        (int) panelSize.getHeight() / 30);
+    g.fillRect((int) topBorder.getX(), (int) topBorder.getY(),
+        (int) topBorder.getWidth(), (int) topBorder.getHeight());
+    g.fillRect((int) leftBorder.getX(), (int) leftBorder.getY(),
+        (int) leftBorder.getWidth(), (int) leftBorder.getHeight());
+    g.fillRect((int) rightBorder.getX(), (int) rightBorder.getY(),
+        (int) rightBorder.getWidth(), (int) rightBorder.getHeight());
   }
 }

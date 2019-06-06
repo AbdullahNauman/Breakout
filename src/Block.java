@@ -1,20 +1,17 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Block
+public class Block extends Rectangle
 {
-  private int hardness, xPos, yPos;// Hardness variable to keep track of how
-                                   // many times ball must hit before breaking.
-                                   // X and Y position for drawing
-  private int width, height;//Width and height of blocks
+  private int hardness;// Hardness variable to keep track of how
+                       // many times ball must hit before breaking.
+  private static final int width = 80, height=40;//Width and height of blocks
 
   public Block(int hardness, int xPos, int yPos)
   {
+    super(xPos,yPos,width,height);
     this.hardness = hardness;
-    this.xPos = xPos;
-    this.yPos = yPos;
-    width = 80;
-    height = 40;
   }
 
   public int getHardness()
@@ -27,26 +24,6 @@ public class Block
     this.hardness = hardness;
   }
 
-  public int getxPos()
-  {
-    return xPos;
-  }
-
-  public void setxPos(int xPos)
-  {
-    this.xPos = xPos;
-  }
-
-  public int getyPos()
-  {
-    return yPos;
-  }
-
-  public void setyPos(int yPos)
-  {
-    this.yPos = yPos;
-  }
-  
   private Color getColor()
   {
     if(hardness ==0)
@@ -64,6 +41,6 @@ public class Block
   public void paintComponent(Graphics g)
   {
     g.setColor(getColor());
-    g.fillRect(xPos, yPos, width, height);
+    g.fillRect((int)super.getLocation().getX(),(int) super.getLocation().getX(), width, height);
   }
 }

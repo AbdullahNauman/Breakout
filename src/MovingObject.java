@@ -1,42 +1,20 @@
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public abstract class MovingObject
+public abstract class MovingObject extends Rectangle
 {
   private int objVelX, objVelY;// Horizontal & vertical velocity of object
-  private int currentXPos, currentYPos;
 
-  public MovingObject(int initXPos, int initYPos)
+  public MovingObject(int initXPos, int initYPos,int width, int height)
   {
+    super(initXPos,initYPos,width,height);
     objVelX = 0;
     objVelY = 0;
-    currentXPos = initXPos;
-    currentYPos = initYPos;
   }
 
   public void move()
   {
-    currentXPos += objVelX;
-    currentYPos += objVelY;
-  }
-
-  public int getCurrentXPos()
-  {
-    return currentXPos;
-  }
-
-  public void setCurrentXPos(int currentXPos)
-  {
-    this.currentXPos = currentXPos;
-  }
-
-  public int getCurrentYPos()
-  {
-    return currentYPos;
-  }
-
-  public void setCurrentYPos(int currentYPos)
-  {
-    this.currentYPos = currentYPos;
+    super.translate(objVelX,objVelY);
   }
 
   public abstract void paintComponent(Graphics g);
