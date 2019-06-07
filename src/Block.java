@@ -7,6 +7,7 @@ public class Block extends Rectangle
   private int hardness;// Hardness variable to keep track of how
                        // many times ball must hit before breaking.
   private int score;
+  private boolean justBroken,pointsGiven;
   public static final int width = 35, height = 12;// Width and height of blocks
 
   public Block(int hardness, int xPos, int yPos)
@@ -14,6 +15,8 @@ public class Block extends Rectangle
     super(xPos, yPos, width, height);
     this.hardness = hardness;
     score = convertScore(hardness);
+    setJustBroken(false);
+    setPointsGiven(false);
   }
 
   public Block(int hardness)
@@ -69,5 +72,25 @@ public class Block extends Rectangle
   public int getScore()
   {
     return score;
+  }
+
+  public boolean isPointsGiven()
+  {
+    return pointsGiven;
+  }
+
+  public void setPointsGiven(boolean pointsGiven)
+  {
+    this.pointsGiven = pointsGiven;
+  }
+
+  public boolean isJustBroken()
+  {
+    return justBroken;
+  }
+
+  public void setJustBroken(boolean justBroken)
+  {
+    this.justBroken = justBroken;
   }
 }

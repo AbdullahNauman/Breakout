@@ -18,7 +18,8 @@ public class GamePanel extends JPanel implements ActionListener
   private Rectangle topBorder, leftBorder, rightBorder;
   private Block blocksToBreak[][];
   private final int sideBorderScale = 40, topBorderScale = 30,
-      blockPosScale = 5, blockYSpaceScale = 22;//Scaling factors for border edges and block positioning
+      blockPosScale = 5, blockYSpaceScale = 22, textShiftX = -60,textShiftY = 50;//Scaling factors for border edges, block positioning, and text positionings
+  private ScoreBoard scoring;
 
   public GamePanel()
   {
@@ -40,6 +41,8 @@ public class GamePanel extends JPanel implements ActionListener
       }
     }
 
+    scoring = new ScoreBoard();
+    
     hasLost = false;
 
     // listen to key presses
@@ -56,6 +59,8 @@ public class GamePanel extends JPanel implements ActionListener
 
     super.paintComponent(g);
 
+    Dimension panelSize = super.getSize();
+    
     drawBorder(g);
     drawBlocks(g);
 
@@ -63,6 +68,8 @@ public class GamePanel extends JPanel implements ActionListener
                              // in the correct position based on data stored in
                              // Paddle class
     ball.paintComponent(g);
+    scoring.paintComponent(g,(int) (panelSize.getWidth()/2)+textShiftX+(int) (panelSize.getWidth()/4),(int) panelSize.getHeight() / blockPosScale
+        -textShiftY);
 
   }
 
@@ -168,6 +175,10 @@ public class GamePanel extends JPanel implements ActionListener
           else
           {
             ball.setObjVelY(ball.getObjVelY()*-1);
+          }
+          if(blocksToBreak[x][y].getHardness()==0&&blocksToBreak[x][y].isJustBroken()&&!blocksToBreak[x][y].isPointsGiven())//TODO FINSH SCORING
+          {
+            scoring.increaseScore(blocksToBreak[x][y].getScore());
           }
         }
       }
