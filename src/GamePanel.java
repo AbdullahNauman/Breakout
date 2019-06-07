@@ -16,6 +16,9 @@ public class GamePanel extends JPanel implements ActionListener
   private boolean hasLost;// Initialized as false in constructor. Changes to
                           // true when ball move below paddle
   private Rectangle topBorder, leftBorder, rightBorder;
+  private Block blocksToBreak[][];
+  private final int sideBorderScale = 40, topBorderScale = 30,
+      blockPosScale = 5, blockYSpaceScale = 22;//Scaling factors for border edges and block positioning
 
   public GamePanel()
   {
@@ -23,8 +26,19 @@ public class GamePanel extends JPanel implements ActionListener
 
     paddle = new Paddle(50, 800);
     ball = new Ball(65, 785);
-    ball.setObjVelY(-2);
+    ball.setObjVelY(-2);//TODO CHANGE ME
     ball.setObjVelX(-2);
+
+    blocksToBreak = new Block[8][14];
+    for (int x = 0; x < blocksToBreak.length; x++)
+    {
+      for (int y = 0; y < blocksToBreak[x].length; y++)
+      {
+        int hardness = (blocksToBreak.length - x + 1) / 2;// Calculates hardness
+                                                          // level based on row
+        blocksToBreak[x][y] = new Block(hardness);
+      }
+    }
 
     hasLost = false;
 
@@ -32,10 +46,9 @@ public class GamePanel extends JPanel implements ActionListener
     setFocusable(true);
     addKeyListener(paddle);
 
-    // call each object move() 60 fps
+    // call each object move() 60 frames per second
     timer = new Timer(1000 / 60, this);
     timer.start();
-
   }
 
   public void paintComponent(Graphics g)
@@ -44,9 +57,10 @@ public class GamePanel extends JPanel implements ActionListener
     super.paintComponent(g);
 
     drawBorder(g);
+    drawBlocks(g);
 
     paddle.paintComponent(g);// Draws paddle component of appropriate size and
-                             // in the correct position based on data store in
+                             // in the correct position based on data stored in
                              // Paddle class
     ball.paintComponent(g);
 
@@ -54,46 +68,30 @@ public class GamePanel extends JPanel implements ActionListener
 
   public void actionPerformed(ActionEvent arg0)
   {
-    if (hasLost)
+    if (hasLost)// Checks loss condition and stops timer if true
       timer.stop();
 
     Dimension panelSize = super.getSize();
     topBorder = new Rectangle(0, 0, (int) panelSize.getWidth(),
-        (int) panelSize.getHeight() / 30);
-    leftBorder = new Rectangle(0, 0, (int) panelSize.getWidth() / 40,
+        (int) panelSize.getHeight() / topBorderScale);// Initializing border
+                                                      // rectangles here panel
+                                                      // is not calculated
+                                                      // before constructor
+    leftBorder = new Rectangle(0, 0,
+        (int) panelSize.getWidth() / sideBorderScale,
         (int) panelSize.getHeight());
     rightBorder = new Rectangle(
-        (int) panelSize.getWidth() - (int) panelSize.getWidth() / 40, 0,
-        (int) panelSize.getWidth() / 40, (int) panelSize.getHeight());
+        (int) panelSize.getWidth()
+            - (int) panelSize.getWidth() / sideBorderScale,
+        0, (int) panelSize.getWidth() / sideBorderScale,
+        (int) panelSize.getHeight());
+
+    setBlockPos(panelSize);
 
     paddle.move();
     ball.move();
 
-    if (ball.intersects(leftBorder) || ball.intersects(rightBorder)) // Checks
-                                                                     // for
-                                                                     // ball
-                                                                     // collisions
-                                                                     // with
-                                                                     // side
-                                                                     // walls
-      ball.setObjVelX(ball.getObjVelX() * -1);
-
-    if (ball.intersects(topBorder)) // Checks for
-                                    // collision
-                                    // with top
-                                    // wall
-                                    // and losing
-                                    // condition
-                                    // of
-                                    // going
-                                    // through
-                                    // the bottom
-      ball.setObjVelY(ball.getObjVelY() * -1);
-    else if ((int) ball.getLocation().getY() == (int) panelSize.getHeight())
-      hasLost = true;
-
-    if (ball.intersects(paddle))
-      ball.setObjVelY(ball.getObjVelY() * -1);
+    collisionDetection(panelSize);
 
     repaint();
   }
@@ -107,5 +105,105 @@ public class GamePanel extends JPanel implements ActionListener
         (int) leftBorder.getWidth(), (int) leftBorder.getHeight());
     g.fillRect((int) rightBorder.getX(), (int) rightBorder.getY(),
         (int) rightBorder.getWidth(), (int) rightBorder.getHeight());
+  }
+
+  private void drawBlocks(Graphics g)
+  {
+    for (int x = 0; x < blocksToBreak.length; x++)
+    {
+      for (int y = 0; y < blocksToBreak[x].length; y++)
+      {
+        blocksToBreak[x][y].paintComponent(g);
+      }
+    }
+  }
+
+  private void collisionDetection(Dimension panelSize)
+  {
+    if (ball.intersects(leftBorder) || ball.intersects(rightBorder)) // Checks
+                                                                     // for ball
+                                                                     // collision
+                                                                     // with
+                                                                     // side
+                                                                     // walls
+      ball.setObjVelX(ball.getObjVelX() * -1);
+
+    if (ball.intersects(topBorder)) // Checks for collision with top wall
+      ball.setObjVelY(ball.getObjVelY() * -1);
+    else if ((int) ball.getLocation().getY() == (int) panelSize.getHeight())// Loss
+                                                                            // condition
+                                                                            // of
+                                                                            // going
+                                                                            // through
+                                                                            // floor
+      hasLost = true;
+
+    if (ball.intersects(paddle))// Checks for paddle-ball collision
+    {
+      ball.setObjVelY(ball.getObjVelY() * -1);
+      if (paddle.getObjVelX() > 0)
+        ball.setObjVelX(-Math.abs(ball.getObjVelX()));
+      else if (paddle.getObjVelX() < 0)
+        ball.setObjVelX(Math.abs(ball.getObjVelX()));
+    }
+
+    if (paddle.intersects(leftBorder))// Prevents paddle from moving off-screen
+      paddle.setLocation((int) leftBorder.getWidth(), (int) paddle.getY());
+    else if (paddle.intersects(rightBorder))
+      paddle.setLocation((int) (rightBorder.getX() - paddle.getWidth()),
+          (int) paddle.getY());
+    
+    //Checking for collision with blocks and decreases hardness when intersecting
+    for (int x = 0; x < blocksToBreak.length; x++)
+    {
+      for (int y = 0; y < blocksToBreak[x].length; y++)
+      {
+        if(blocksToBreak[x][y].intersects(ball)&&blocksToBreak[x][y].getHardness()>0)
+        {
+          blocksToBreak[x][y].breakBlock();
+          if(blocksToBreak[x][y].getX()>=ball.getX()+ball.getDiameter()||blocksToBreak[x][y].getX()+Block.width<=ball.getX())
+          {
+            ball.setObjVelX(ball.getObjVelX()*-1);
+          }
+          else
+          {
+            ball.setObjVelY(ball.getObjVelY()*-1);
+          }
+        }
+      }
+    }
+
+  }
+
+  private void setBlockPos(Dimension panelSize)
+  {
+    int playingWidth = (int) (panelSize.getWidth() - rightBorder.getWidth()
+        - leftBorder.getWidth());
+
+    int padding = (int) ((playingWidth - blocksToBreak[0].length * Block.width)
+        / ((double) (blocksToBreak[0].length - 1)));
+    double accuratePadding = (playingWidth
+        - blocksToBreak[0].length * Block.width)
+        / ((double) (blocksToBreak[0].length - 1));// Double version of padding
+                                                   // variable so that error
+                                                   // from integer coordinate
+                                                   // system can be adjusted
+                                                   // later
+
+    for (int x = 0; x < blocksToBreak.length; x++)
+    {
+      for (int y = 0; y < blocksToBreak[x].length; y++)
+      {
+        int xPos = (int) panelSize.getWidth() / sideBorderScale
+            + (padding + Block.width) * y;
+        int yPos = (int) panelSize.getHeight() / blockPosScale
+            + x * blockYSpaceScale;
+        blocksToBreak[x][y].setLocation(
+            xPos + (int) (accuratePadding * (blocksToBreak[0].length - 1)
+                - padding * (blocksToBreak[0].length - 1)) / 2,
+            yPos);// Addition to xPos in argument 1 is to adjust for error from
+                  // using integer coordinate system
+      }
+    }
   }
 }

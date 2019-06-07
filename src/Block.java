@@ -6,11 +6,19 @@ public class Block extends Rectangle
 {
   private int hardness;// Hardness variable to keep track of how
                        // many times ball must hit before breaking.
-  private static final int width = 80, height=40;//Width and height of blocks
+  private int score;
+  public static final int width = 35, height = 12;// Width and height of blocks
 
   public Block(int hardness, int xPos, int yPos)
   {
-    super(xPos,yPos,width,height);
+    super(xPos, yPos, width, height);
+    this.hardness = hardness;
+    score = convertScore(hardness);
+  }
+
+  public Block(int hardness)
+  {
+    super(width, height);
     this.hardness = hardness;
   }
 
@@ -24,23 +32,42 @@ public class Block extends Rectangle
     this.hardness = hardness;
   }
 
+  public int breakBlock()
+  {
+    if (hardness > 0)
+      hardness -= 1;
+    return hardness;
+  }
+
   private Color getColor()
   {
-    if(hardness ==0)
-      return new Color(0f,0f,0f,0f);
-    else if(hardness == 1)
+    if (hardness == 0)
+      return new Color(0f, 0f, 0f, 0f);
+    else if (hardness == 1)
       return Color.YELLOW;
-    else if(hardness == 2)
+    else if (hardness == 2)
       return Color.GREEN;
-    else if(hardness == 3)
+    else if (hardness == 3)
       return Color.ORANGE;
-    else if(hardness == 4)
+    else if (hardness == 4)
       return Color.RED;
     return null;
   }
+
   public void paintComponent(Graphics g)
   {
     g.setColor(getColor());
-    g.fillRect((int)super.getLocation().getX(),(int) super.getLocation().getX(), width, height);
+    g.fillRect((int) super.getLocation().getX(),
+        (int) super.getLocation().getY(), width, height);
+  }
+  
+  private int convertScore(int hardness)
+  {
+    return 2*hardness-1;
+  }
+  
+  public int getScore()
+  {
+    return score;
   }
 }
