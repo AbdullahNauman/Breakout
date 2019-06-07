@@ -18,7 +18,10 @@ public class GamePanel extends JPanel implements ActionListener
   private Rectangle topBorder, leftBorder, rightBorder;
   private Block blocksToBreak[][];
   private final int sideBorderScale = 40, topBorderScale = 30,
-      blockPosScale = 5, blockYSpaceScale = 22;//Scaling factors for border edges and block positioning
+      blockPosScale = 5, blockYSpaceScale = 22, textShiftX = -60,
+      textShiftY = 12;// Scaling factors for border edges, block positioning,
+                      // and text positionings
+  private ScoreBoard scoring;
 
   public GamePanel()
   {
@@ -26,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener
 
     paddle = new Paddle(50, 800);
     ball = new Ball(65, 785);
-    ball.setObjVelY(-2);//TODO CHANGE ME
+    ball.setObjVelY(-2);// TODO CHANGE ME
     ball.setObjVelX(-2);
 
     blocksToBreak = new Block[8][14];
@@ -39,6 +42,8 @@ public class GamePanel extends JPanel implements ActionListener
         blocksToBreak[x][y] = new Block(hardness);
       }
     }
+
+    scoring = new ScoreBoard();
 
     hasLost = false;
 
@@ -56,12 +61,18 @@ public class GamePanel extends JPanel implements ActionListener
 
     super.paintComponent(g);
 
+    Dimension panelSize = super.getSize();
+
     drawBorder(g);
     drawBlocks(g);
 
     paddle.paintComponent(g);// Draws paddle component of appropriate size and
                              // in the correct position based on data stored in
                              // Paddle class
+    scoring.paintComponent(g,
+        (int) (panelSize.getWidth() / 2) + textShiftX
+            + (int) (panelSize.getWidth() / 4),
+        (int) panelSize.getHeight() / blockPosScale - textShiftY);
     ball.paintComponent(g);
 
   }
@@ -152,22 +163,31 @@ public class GamePanel extends JPanel implements ActionListener
     else if (paddle.intersects(rightBorder))
       paddle.setLocation((int) (rightBorder.getX() - paddle.getWidth()),
           (int) paddle.getY());
-    
-    //Checking for collision with blocks and decreases hardness when intersecting
+
+    // Checking for collision with blocks and decreases hardness when
+    // intersecting
     for (int x = 0; x < blocksToBreak.length; x++)
     {
       for (int y = 0; y < blocksToBreak[x].length; y++)
       {
-        if(blocksToBreak[x][y].intersects(ball)&&blocksToBreak[x][y].getHardness()>0)
+        if (blocksToBreak[x][y].intersects(ball)
+            && blocksToBreak[x][y].getHardness() > 0)
         {
           blocksToBreak[x][y].breakBlock();
-          if(blocksToBreak[x][y].getX()>=ball.getX()+ball.getDiameter()||blocksToBreak[x][y].getX()+Block.width<=ball.getX())
+          if (blocksToBreak[x][y].getX() >= ball.getX() + ball.getDiameter()
+              || blocksToBreak[x][y].getX() + Block.width <= ball.getX())
           {
-            ball.setObjVelX(ball.getObjVelX()*-1);
+            ball.setObjVelX(ball.getObjVelX() * -1);
           }
           else
           {
-            ball.setObjVelY(ball.getObjVelY()*-1);
+            ball.setObjVelY(ball.getObjVelY() * -1);
+          }
+          if (blocksToBreak[x][y].getHardness() == 0
+              && !blocksToBreak[x][y].isPointsGiven())// TODO FINSH SCORING
+          {
+            scoring.increaseScore(blocksToBreak[x][y].getScore());
+            blocksToBreak[x][y].setPointsGiven(true);
           }
         }
       }
