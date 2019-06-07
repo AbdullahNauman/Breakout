@@ -15,13 +15,14 @@ public class Block extends Rectangle
     super(xPos, yPos, width, height);
     this.hardness = hardness;
     score = convertScore(hardness);
-    setJustBroken(false);
-    setPointsGiven(false);
+    pointsGiven = false;
   }
 
   public Block(int hardness)
   {
     super(width, height);
+    score = convertScore(hardness);
+    pointsGiven = false;
     this.hardness = hardness;
   }
 
