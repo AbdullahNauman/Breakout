@@ -1,5 +1,5 @@
 # HIGH SCORES
-1: CHM - SCORE: 20  
+1: CHM - SCORE: 020  
 2:  
 3:  
 4:  
