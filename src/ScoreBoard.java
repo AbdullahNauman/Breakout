@@ -28,7 +28,7 @@ public class ScoreBoard
     this.score+=score;
   }
   
-  public void paintComponent(Graphics g, int x, int y)
+  private void setupFont(Graphics g)
   {
     g.setColor(Color.WHITE);
     Font font = new Font(Font.SANS_SERIF, Font.BOLD, 60);//Temporarily set font to logical font in case of Exception error
@@ -46,6 +46,26 @@ public class ScoreBoard
     }
     font = font.deriveFont(75f);//Change font size
     g.setFont(font);
-    g.drawString(String.valueOf(score),x,y);//Draw current score
+  }
+  
+  public void paintComponent(Graphics g, int x, int y)
+  {
+    setupFont(g);
+    if(score>=100)//Checking for number of digits and adding preceding zeros accordingly
+      g.drawString(String.valueOf(score),x,y);
+    else if(score>=10)
+      g.drawString("0"+String.valueOf(score),x,y);
+    else
+      g.drawString("00"+String.valueOf(score),x,y);//Draw current score
+  }
+  public void paintComponent(Graphics g, int x, int y,String precedingText)
+  {
+    setupFont(g);
+    if(score>=100)//Checking for number of digits and adding preceding zeros accordingly
+      g.drawString(precedingText+String.valueOf(score),x,y);
+    else if(score>=10)
+      g.drawString(precedingText+"0"+String.valueOf(score),x,y);
+    else
+      g.drawString(precedingText+"00"+String.valueOf(score),x,y);//Draw current score
   }
 }

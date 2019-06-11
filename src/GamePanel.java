@@ -75,6 +75,17 @@ public class GamePanel extends JPanel implements ActionListener
         (int) panelSize.getHeight() / blockPosScale - textShiftY);
     ball.paintComponent(g);
 
+    if (hasLost)
+    {
+      g.setColor(Color.BLACK);
+      g.fillRect((int) leftBorder.getWidth(), (int) topBorder.getHeight(),
+          (int) (panelSize.getWidth() - leftBorder.getWidth()
+              - rightBorder.getWidth()),
+          (int) (panelSize.getHeight() - topBorder.getHeight()));
+      g.setColor(Color.WHITE);
+      scoring.paintComponent(g, (int) (leftBorder.getWidth() + 20),
+          (int) panelSize.getHeight() / 2, "Final Score: ");// Draw final score
+    }
   }
 
   public void actionPerformed(ActionEvent arg0)
@@ -85,8 +96,8 @@ public class GamePanel extends JPanel implements ActionListener
     Dimension panelSize = super.getSize();
     topBorder = new Rectangle(0, 0, (int) panelSize.getWidth(),
         (int) panelSize.getHeight() / topBorderScale);// Initializing border
-                                                      // rectangles here panel
-                                                      // is not calculated
+                                                      // rectangles here because
+                                                      // panel is not calculated
                                                       // before constructor
     leftBorder = new Rectangle(0, 0,
         (int) panelSize.getWidth() / sideBorderScale,
@@ -184,7 +195,7 @@ public class GamePanel extends JPanel implements ActionListener
             ball.setObjVelY(ball.getObjVelY() * -1);
           }
           if (blocksToBreak[x][y].getHardness() == 0
-              && !blocksToBreak[x][y].isPointsGiven())// TODO FINSH SCORING
+              && !blocksToBreak[x][y].isPointsGiven())
           {
             scoring.increaseScore(blocksToBreak[x][y].getScore());
             blocksToBreak[x][y].setPointsGiven(true);
