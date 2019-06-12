@@ -50,13 +50,7 @@ public class ScoreBoard
   
   public void paintComponent(Graphics g, int x, int y)
   {
-    setupFont(g);
-    if(score>=100)//Checking for number of digits and adding preceding zeros accordingly
-      g.drawString(String.valueOf(score),x,y);
-    else if(score>=10)
-      g.drawString("0"+String.valueOf(score),x,y);
-    else
-      g.drawString("00"+String.valueOf(score),x,y);//Draw current score
+    this.paintComponent(g,x,y,"");
   }
   public void paintComponent(Graphics g, int x, int y,String precedingText)
   {
