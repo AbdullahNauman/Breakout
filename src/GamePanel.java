@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
     if (ball.intersects(paddle)) // Checks for paddle-ball collision
     {
-      if (paddle.getX() >= ball.getX() + ball.getDiameter() - 5 || paddle.getX() + paddle.getWidth() - 5 <= ball.getX()) // Checks
+      if (paddle.getX() >= ball.getX() + ball.getDiameter() + 5 || paddle.getX() + paddle.getWidth() -5 <= ball.getX())  // Checks
                                                                                                                          // for
                                                                                                                          // hitting
                                                                                                                          // side
@@ -285,6 +285,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
       hasLost = false;
       initializeBlocks();
       ball.setLocation((int) paddle.getX(), (int) paddle.getY() - (int) ball.getHeight());
+      scoring.setScore(0);
       timer.start();
     }
     else if (e.getKeyCode() == KeyEvent.VK_SPACE && !hasReleased)
