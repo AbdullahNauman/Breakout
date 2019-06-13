@@ -16,11 +16,11 @@ public class Paddle extends MovingObject implements KeyListener
   {
     if (e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-      super.setObjVelX(2);
+      super.setObjVelX(1);
     }
     else if (e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-      super.setObjVelX(-2);
+      super.setObjVelX(-1);
     }
   }
 
