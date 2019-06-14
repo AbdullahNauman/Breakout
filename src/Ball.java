@@ -4,6 +4,7 @@ import java.awt.Graphics;
 public class Ball extends MovingObject
 {
   private final static int diameter = 15;// Ball dimensions
+  public final static int maxVel = 1;//Max velocity of ball
   
   public Ball(int initXPos, int initYPos)
   {
