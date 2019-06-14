@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
     addKeyListener(this);
 
     // call each object move() 120 frames per second
-    timer = new Timer(1000 / 120, this);
+    timer = new Timer(1000 / 200, this);
     timer.start();
   }
 
@@ -106,6 +106,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
           (int) panelSize.getHeight() / 2 + 30, "Press space to play again",
           30f);
     }
+    
+    if(!hasReleased)
+    {
+      drawText(g, (int) (leftBorder.getWidth() + 20),
+          (int) panelSize.getHeight() / 2 + 30, "Press space release ball",
+          40f);
+    }
   }
 
   public void actionPerformed(ActionEvent arg0)
@@ -116,7 +123,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
       ball.setLocation(
           (int) (paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2),
           (int) (paddle.getY() - ball.getHeight()));
+    
     Dimension panelSize = super.getSize();
+    
     topBorder = new Rectangle(0, 0, (int) panelSize.getWidth(),
         (int) panelSize.getHeight() / topBorderScale);// Initializing
                                                       // border
@@ -198,7 +207,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
         ball.setObjVelY(-Math.abs((ball.getObjVelY())));
         if (paddle.getObjVelX() > 0)// Ball spin characteristic
           ball.setObjVelX(-Ball.maxVel);
-        else
+        else if (paddle.getObjVelX() < 0)
           ball.setObjVelX(Ball.maxVel);
       }
       else
