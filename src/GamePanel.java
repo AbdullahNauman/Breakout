@@ -177,32 +177,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
     if (ball.intersects(paddle)) // Checks for paddle-ball collision
     {
-      if (paddle.getX() >= ball.getX() + ball.getDiameter() + 5 || paddle.getX() + paddle.getWidth() -5 <= ball.getX())  // Checks
-                                                                                                                         // for
-                                                                                                                         // hitting
-                                                                                                                         // side
-                                                                                                                         // of
-                                                                                                                         // paddle.
-                                                                                                                         // Subtracted
-                                                                                                                         // constants
-                                                                                                                         // are
-                                                                                                                         // for
-                                                                                                                         // fine
-                                                                                                                         // tuning
-                                                                                                                         // purpose
-                                                                                                                         // when
-                                                                                                                         // paddle
-                                                                                                                         // is
-                                                                                                                         // moving.
-        ball.setObjVelX(ball.getObjVelX() * -1);
+      Rectangle intersection = paddle.intersection(ball);
+      if(intersection.getHeight()<intersection.getWidth())
+      {
+        ball.setObjVelY(-Math.abs((ball.getObjVelY())));
+        if(paddle.getObjVelX()>0)//Ball spin characteristic
+          ball.setObjVelX(-Math.abs((ball.getObjVelX())));
+        else
+          ball.setObjVelX(Math.abs((ball.getObjVelX())));
+      }
       else
       {
-        ball.setObjVelY(ball.getObjVelY() * -1);
-
-        if (paddle.getObjVelX() > 0)
-          ball.setObjVelX(-Math.abs(ball.getObjVelX()));
-        else if (paddle.getObjVelX() < 0)
-          ball.setObjVelX(Math.abs(ball.getObjVelX()));
+        ball.setObjVelX(ball.getObjVelX() * -1);
+        if(ball.getCenterX()>paddle.getCenterX())
+          ball.setLocation((int)paddle.getMaxX()+1,(int)ball.getY());
+        else
+          ball.setLocation((int)paddle.getMinX()-1,(int)ball.getY());
       }
     }
 
@@ -230,17 +220,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
             ball.setObjVelY(ball.getObjVelY() * -1);
           }
 
-          if (blocksToBreak[x][y].getHardness() == 0 && !blocksToBreak[x][y].isPointsGiven()) // Checking
-                                                                                              // if
-                                                                                              // points
-                                                                                              // need
-                                                                                              // to
-                                                                                              // be
-                                                                                              // given
-                                                                                              // for
-                                                                                              // the
-                                                                                              // current
-                                                                                              // block
+          if (blocksToBreak[x][y].getHardness() == 0 && !blocksToBreak[x][y].isPointsGiven()) //Checking if points need to be given
           {
             scoring.increaseScore(blocksToBreak[x][y].getScore());
             blocksToBreak[x][y].setPointsGiven(true);
