@@ -5,8 +5,8 @@
  * Authors: Christopher Moore and Abdullah Nauman
  */
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+//import java.awt.Dimension;
+//import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
@@ -17,9 +17,9 @@ public class Main extends JFrame {
 
 		// Using the player's screen size to position and scale JFrame to middle of user
 		// display (found in online documentation)
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = screenSize.height;
-		setSize(height * 9 / 16, (int) (height * 0.8));
+		// Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		// int height = screenSize.height;
+		setSize(607, 864);
 
 		// setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// setUndecorated(true);
