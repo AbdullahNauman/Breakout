@@ -378,8 +378,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
       else if (paddle.getObjVelX() > 0)
         ball.setObjVelX(-1);
       else
-        ball.setObjVelX(0);
-      // ball.setObjVelX((int) (Math.random() * 3) - 1);
+        ball.setObjVelX((int) (Math.random() * 3) - 1);
     }
   }
 
