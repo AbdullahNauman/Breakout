@@ -19,7 +19,8 @@ public class Main extends JFrame {
 		// display (found in online documentation)
 		// Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		// int height = screenSize.height;
-		setSize(607, 864);
+		
+		setSize(607, 864);//Sets constant Frame size
 
 		// setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// setUndecorated(true);
