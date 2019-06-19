@@ -360,7 +360,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
   public void keyPressed(KeyEvent e)
   {
-    if (e.getKeyCode() == KeyEvent.VK_SPACE && hasLost)
+    if (e.getKeyCode() == KeyEvent.VK_SPACE && (hasLost||hasWon))
     {
       hasLost = false;
       initializeBlocks();
