@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Paddle extends MovingObject implements KeyListener {
-	private static final int height = 10;
-	private static int width = 40;
+	private static final int height = 10, origWidth = 40;
+	private static int width = origWidth;
 	// Paddle dimensions
 
 	public Paddle(int initXPos, int initYPos) {
