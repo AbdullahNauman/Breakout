@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 
   private void initializeBlocks()
   {
-    blocksToBreak = new Block[1][1];
+    blocksToBreak = new Block[8][14];
     for (int x = 0; x < blocksToBreak.length; x++)
     {
       for (int y = 0; y < blocksToBreak[x].length; y++)
