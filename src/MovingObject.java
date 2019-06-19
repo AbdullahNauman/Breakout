@@ -1,3 +1,9 @@
+
+/* 
+ * Name: MovingObject.java 
+ * Description: Provides a structure for the nature of 
+ * Author: Christopher Moore  
+ */
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
