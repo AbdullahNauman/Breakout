@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		setBackground(new Color(236, 240, 241));
 
 		paddle = new Paddle(50, 800);
-		paddle.setWidth(40);
+
 		ball = new Ball(65, 785);
 
 		initializeBlocks();
